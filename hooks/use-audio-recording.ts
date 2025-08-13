@@ -93,12 +93,12 @@ export function useAudioRecording(options: UseAudioRecordingOptions = {}) {
         }
       }, 100)
 
-      return true
+      return audioEngineRef.current?.getMediaStream() || null
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to start recording'
       setState(prev => ({ ...prev, error: errorMessage }))
       options.onError?.(error instanceof Error ? error : new Error(errorMessage))
-      return false
+      return null
     }
   }, [initialize, options])
 

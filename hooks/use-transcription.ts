@@ -12,6 +12,8 @@ interface TranscriptionState {
   isActive: boolean
   segments: TranscriptSegment[]
   currentText: string
+  finalTranscript: string
+  interimTranscript: string
   error: string | null
   isSupported: boolean
 }
@@ -24,6 +26,8 @@ export function useTranscription(options: UseTranscriptionOptions = {}) {
     isActive: false,
     segments: [],
     currentText: '',
+    finalTranscript: '',
+    interimTranscript: '',
     error: null,
     isSupported: true
   })
@@ -43,7 +47,9 @@ export function useTranscription(options: UseTranscriptionOptions = {}) {
       setState(prev => ({
         ...prev,
         segments: [...prev.segments, segment],
-        currentText: segment.text
+        currentText: segment.text,
+        finalTranscript: [...prev.segments, segment].map(s => s.text).join(' '),
+        interimTranscript: segment.text
       }))
       
       options.onSegmentAdded?.(segment)
@@ -107,11 +113,30 @@ export function useTranscription(options: UseTranscriptionOptions = {}) {
     streamRef.current = null
   }, [])
 
+  const pauseTranscription = useCallback(() => {
+    if (engineRef.current) {
+      engineRef.current.stopTranscription()
+    }
+    
+    setState(prev => ({
+      ...prev,
+      isActive: false
+    }))
+  }, [])
+
+  const resumeTranscription = useCallback(async () => {
+    if (streamRef.current) {
+      await startTranscription(streamRef.current)
+    }
+  }, [])
+
   const clearTranscript = useCallback(() => {
     setState(prev => ({
       ...prev,
       segments: [],
-      currentText: ''
+      currentText: '',
+      finalTranscript: '',
+      interimTranscript: ''
     }))
   }, [])
 
@@ -220,6 +245,8 @@ export function useTranscription(options: UseTranscriptionOptions = {}) {
     // Actions
     startTranscription,
     stopTranscription,
+    pauseTranscription,
+    resumeTranscription,
     clearTranscript,
     addManualSegment,
     updateSegment,

@@ -47,9 +47,27 @@ export function RecordingWindowContent() {
 
   const handleStartRecording = async () => {
     try {
-      await audioRecording.startRecording()
-      transcription.startTranscription()
-      startRecording()
+      const stream = await audioRecording.startRecording()
+      if (stream instanceof MediaStream) {
+        await transcription.startTranscription(stream)
+      }
+      
+      const meeting = {
+        id: `meeting-${Date.now()}`,
+        title: meetingTitle || 'Untitled Meeting',
+        date: new Date(),
+        duration: 0,
+        filePath: '',
+        audioPath: '',
+        transcriptPath: '',
+        participants: participants.split(',').map(p => p.trim()).filter(Boolean),
+        topics: [],
+        status: 'recording' as const,
+        size: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+      startRecording(meeting)
     } catch (error) {
       console.error('Failed to start recording:', error)
     }
@@ -63,12 +81,19 @@ export function RecordingWindowContent() {
     // Save the meeting
     if (meetingTitle) {
       const meeting = await saveMeeting({
+        id: `meeting-${Date.now()}`,
         title: meetingTitle || 'Untitled Meeting',
+        date: new Date(),
         participants: participants.split(',').map(p => p.trim()).filter(Boolean),
         duration: recordingState.duration,
+        filePath: '',
+        audioPath: '',
+        transcriptPath: '',
         status: 'completed' as const,
         topics: [],
-        summary: '',
+        size: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         transcript: {
           segments: transcription.segments,
           fullText: transcription.finalTranscript

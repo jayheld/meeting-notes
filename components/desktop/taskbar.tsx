@@ -40,7 +40,7 @@ export function Taskbar() {
       size: { width: 600, height: 400 },
       isMinimized: false,
       isMaximized: false,
-      isFocused: true,
+
       isClosable: true,
       isResizable: true,
       isDraggable: true,
@@ -68,7 +68,7 @@ export function Taskbar() {
       size: { width: 500, height: 350 },
       isMinimized: false,
       isMaximized: false,
-      isFocused: true,
+
       isClosable: true,
       isResizable: true,
       isDraggable: true,
@@ -114,7 +114,7 @@ export function Taskbar() {
       size: { width: 700, height: 500 },
       isMinimized: false,
       isMaximized: false,
-      isFocused: true,
+
       isClosable: true,
       isResizable: true,
       isDraggable: true,

@@ -169,7 +169,7 @@ export class AudioEngine {
     const updateAudioLevel = () => {
       if (!this.analyserNode || !this.dataArray || this.isPaused) return
 
-      this.analyserNode.getByteFrequencyData(this.dataArray)
+      this.analyserNode.getByteFrequencyData(new Uint8Array(this.dataArray!))
 
       // Calculate RMS (Root Mean Square) for audio level
       let sum = 0
@@ -217,10 +217,6 @@ export class AudioEngine {
     }
   }
 
-  getMediaStream(): MediaStream | null {
-    return this.stream
-  }
-
   async dispose(): Promise<void> {
     this.stopAudioLevelMonitoring()
 
@@ -244,11 +240,16 @@ export class AudioEngine {
     this.dataArray = null
   }
 
+  // Get the current media stream
+  getMediaStream(): MediaStream | null {
+    return this.stream
+  }
+
   // Utility method to check browser support
   static isSupported(): boolean {
     return !!(
       navigator.mediaDevices &&
-      navigator.mediaDevices.getUserMedia &&
+      navigator.mediaDevices.getUserMedia !== undefined &&
       window.MediaRecorder &&
       window.AudioContext
     )

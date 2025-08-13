@@ -31,7 +31,7 @@ export function MeetingDashboardWindow() {
       size: { width: 500, height: 400 },
       isMinimized: false,
       isMaximized: false,
-      isFocused: true,
+
       isClosable: true,
       isResizable: true,
       isDraggable: true,
@@ -55,7 +55,7 @@ export function MeetingDashboardWindow() {
               <div>
                 <h3 className="text-title-3 font-display mb-2">Topics</h3>
                 <div className="flex flex-wrap gap-2">
-                  {meetingProp.topics.map((topic, index) => (
+                  {meetingProp.topics.map((topic: string, index: number) => (
                     <span key={index} className="px-2 py-1 bg-secondary border-2 border-border text-caption font-body">
                       {topic}
                     </span>
@@ -66,7 +66,7 @@ export function MeetingDashboardWindow() {
                 <h3 className="text-title-3 font-display mb-2">Transcript</h3>
                 <div className="border-2 border-border p-4 bg-input min-h-32 text-body font-body">
                   {meetingProp.transcript?.segments?.length > 0 
-                    ? meetingProp.transcript.segments.map(segment => segment.text).join(' ')
+                    ? meetingProp.transcript.segments.map((segment: any) => segment.text).join(' ')
                     : 'No transcript available'
                   }
                 </div>
@@ -79,7 +79,7 @@ export function MeetingDashboardWindow() {
         size: { width: 600, height: 500 },
         isMinimized: false,
         isMaximized: false,
-        isFocused: true,
+  
         isClosable: true,
         isResizable: true,
         isDraggable: true,

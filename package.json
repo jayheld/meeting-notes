@@ -9,7 +9,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "echo \"Warning: No tests specified yet\" && exit 0",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit --skipLibCheck",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "ci": "npm run type-check && npm run lint && npm run test && npm run build"

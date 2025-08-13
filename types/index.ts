@@ -14,6 +14,11 @@ export interface Meeting {
   size: number
   createdAt: Date
   updatedAt: Date
+  summary?: string
+  transcript?: {
+    segments: TranscriptSegment[]
+    fullText: string
+  }
 }
 
 export interface TranscriptSegment {
@@ -92,8 +97,8 @@ export interface RecordingState {
 
 export interface SearchFilters {
   dateRange?: {
-    start: Date
-    end: Date
+    start?: Date
+    end?: Date
   }
   participants?: string[]
   topics?: string[]
